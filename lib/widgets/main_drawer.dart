@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+
+import 'package:location/location.dart';
+import '../screens/map_view_screen.dart';
+import '../screens/verticals_overview_screen.dart';
+import '../screens/user_vertical_screen.dart';
+import '../size_config.dart';
+
+class MyDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    return Drawer(
+      child: Column(children: [
+        AppBar(
+          title: Text("SCRC Lab"),
+          automaticallyImplyLeading: false,
+        ),
+        Container(
+          width: getProportionateScreenHeight(200),
+          height: getProportionateScreenHeight(120),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image:
+                      AssetImage("assets/icon/smartCity_livingLab.png"),
+                  fit: BoxFit.cover)),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.shop),
+          title: Text("Verticals"),
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(VerticalsOverviewScreen.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.edit),
+          title: Text("Manage Verticals"),
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(UserVerticalScreen.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.location_pin),
+          title: Text("Map View"),
+          onTap: () async {
+            Location location = new Location();
+
+            bool _serviceEnabled;
+            _serviceEnabled = await location.serviceEnabled();
+            if (!_serviceEnabled) {
+              _serviceEnabled = await location.requestService();
+              if (!_serviceEnabled) {
+                return;
+              }
+            }
+            Navigator.of(context).pushReplacementNamed(MapViewScreen.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text("Settings"),
+          onTap: () {
+            // Navigator.of(context)
+            //     .pushReplacementNamed();
+          },
+        ),
+      ]),
+    );
+  }
+}
