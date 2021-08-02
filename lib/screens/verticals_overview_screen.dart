@@ -36,7 +36,6 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Verticals"),
-        elevation: 5,
       ),
       drawer: MyDrawer(),
       body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),

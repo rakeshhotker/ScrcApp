@@ -15,8 +15,8 @@ class VerticalDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final verticalId = ModalRoute.of(context).settings.arguments as String;
-    final vertical = Provider.of<Verticals>(context).findById(verticalId);
+    final verticalTitle = ModalRoute.of(context).settings.arguments as String;
+    final vertical = Provider.of<Verticals>(context).findByTitle(verticalTitle);
     return WillPopScope(
       onWillPop: () {
         Navigator.of(context)
@@ -26,7 +26,6 @@ class VerticalDetailScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(vertical.title),
-          elevation: 5,
         ),
         drawer: MyDrawer(),
         body: SingleChildScrollView(
@@ -38,8 +37,8 @@ class VerticalDetailScreen extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Hero(
-                    tag: vertical.id.toString(),
-                    child: Image.network(vertical.imageUrl, fit: BoxFit.cover),
+                    tag: vertical.title.toString(),
+                    child: Image.asset("assets/icon/" + vertical.title + ".png", fit: BoxFit.cover,),
                   ),
                 ),
               ),
@@ -53,9 +52,8 @@ class VerticalDetailScreen extends StatelessWidget {
                 itemCount: vertical.vertices.length,
                 itemBuilder: (ctx, i) {
                   return VertexItem(
-                    env: vertical.env,
                     index: i + 1,
-                    name: vertical.vertices[i].name,
+                    vertex: vertical.vertices[i],
                   );
                 },
               ),

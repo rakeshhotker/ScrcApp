@@ -14,11 +14,11 @@ class VerticalItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).pushReplacementNamed(VerticalDetailScreen.routeName,
-            arguments: vertical.id);
+            arguments: vertical.title);
         },
         child: GridTile(
-          child: Image.network(
-            vertical.imageUrl,
+          child: Image.asset(
+            "assets/icon/" + vertical.title + ".png",
             fit: BoxFit.cover,
           ),
           footer: GridTileBar(

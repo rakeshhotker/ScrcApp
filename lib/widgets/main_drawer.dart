@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:location/location.dart';
+
 import '../screens/map_view_screen.dart';
 import '../screens/verticals_overview_screen.dart';
-import '../screens/user_vertical_screen.dart';
 import '../size_config.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -36,15 +35,6 @@ class MyDrawer extends StatelessWidget {
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.edit),
-          title: Text("Manage Verticals"),
-          onTap: () {
-            Navigator.of(context)
-                .pushReplacementNamed(UserVerticalScreen.routeName);
-          },
-        ),
-        Divider(),
-        ListTile(
           leading: Icon(Icons.location_pin),
           title: Text("Map View"),
           onTap: () async {
@@ -59,15 +49,6 @@ class MyDrawer extends StatelessWidget {
               }
             }
             Navigator.of(context).pushReplacementNamed(MapViewScreen.routeName);
-          },
-        ),
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text("Settings"),
-          onTap: () {
-            // Navigator.of(context)
-            //     .pushReplacementNamed();
           },
         ),
       ]),

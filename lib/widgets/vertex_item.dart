@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'package:scrc/size_config.dart';
+import 'package:scrc/providers/vertex.dart';
+
+import '../size_config.dart';
 
 class VertexItem extends StatefulWidget {
-  final String name;
-  final String env;
   final int index;
-  VertexItem({this.name, this.env, this.index});
+  final Vertex vertex;
+  VertexItem({this.vertex, this.index});
 
   @override
   _VertexItemState createState() => _VertexItemState();
@@ -18,46 +17,13 @@ class VertexItem extends StatefulWidget {
 class _VertexItemState extends State<VertexItem> {
   var readings = new Map();
   Future<void> getReadings() async {
-    String url =
-        "https://iudx-rs-onem2m.iiit.ac.in/ngsi-ld/v1/entities/research.iiit.ac.in/f7cc38aec6ba595e699add1601d2967c7b13b489/iudx-rs-onem2m.iiit.ac.in/iiith-env-";
-    url += widget.env + "/" + widget.name;
-    var uri = Uri.parse(url);
-    try {
-      final response = await http.get(uri);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      String status = extractedData['title'];
-      if (status == "success") {
-        final re = extractedData['results'] as List<dynamic>;
-        re.forEach((results) {
-          results.forEach((key, value) {
-            if (key != "versionInfo" && key != "id") {
-              if (key == "Timestamp" ||
-                  key == "observationDateTime" ||
-                  key == "airQualityIndex" ||
-                  key == "airQualityLevel" ||
-                  key == "aqiMajorPollutant") {
-                readings[key] = value.toString();
-              } else {
-                final data = value as Map<String, dynamic>;
-                readings[key] = data["instValue"].toString();
-              }
-            }
-          });
-        });
-        
-        print("Yes");
-      } else {
-        readings['Error'] = 'Invalid Name/Env';
-      }
-    } catch (error) {
-      readings['Error'] = 'Invalid Name/Env';
-      print(error);
-    }
+    readings = widget.vertex.data;
   }
 
   var _expanded = false;
   @override
   Widget build(BuildContext context) {
+    getReadings();
     return Card(
         margin: EdgeInsets.all(10),
         child: Column(
@@ -68,30 +34,22 @@ class _VertexItemState extends State<VertexItem> {
                     padding: EdgeInsets.all(5),
                     child: FittedBox(child: Text(widget.index.toString()))),
               ),
-              title: Text(widget.name),
+              title: Text(widget.vertex.nodeId),
+              subtitle: Text(widget.vertex.name),
               trailing: Container(
                 width: getProportionateScreenWidth(100),
                 child: Row(
                   children: [
                     IconButton(
                         icon: Icon(Icons.graphic_eq_outlined),
-                        onPressed: () {
-                          
-                        }),
+                        onPressed: () {}),
                     IconButton(
-                        icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+                        icon: Icon(
+                            _expanded ? Icons.expand_less : Icons.expand_more),
                         onPressed: () {
-                          if (!_expanded)
-                            getReadings().then((value) => {
-                                  setState(() {
-                                    _expanded = !_expanded;
-                                  })
-                                });
-                          else
-                            setState(() {
-                              readings.clear();
-                              _expanded = !_expanded;
-                            });
+                          setState(() {
+                            _expanded = !_expanded;
+                          });
                         }),
                   ],
                 ),
@@ -127,7 +85,8 @@ class _VertexItemState extends State<VertexItem> {
                                   ))),
                             ),
                             title: Text(key),
-                            trailing: FittedBox(child: Text(readings[key])),
+                            trailing: FittedBox(
+                                child: Text(readings[key].toString())),
                           ),
                         ));
                   },
