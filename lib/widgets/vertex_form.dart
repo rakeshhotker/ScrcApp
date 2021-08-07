@@ -97,7 +97,7 @@
 //     );
 //   }
 
-//   ///form validator
+//   form validator
 //   bool validate() {
 //     var valid = form.currentState.validate();
 //     if (valid) form.currentState.save();

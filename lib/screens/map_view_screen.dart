@@ -5,10 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
-import 'package:intl/intl.dart';
+import 'package:animated_stack/animated_stack.dart';
+import 'package:scrc/widgets/data_container.dart';
+import 'package:scrc/widgets/icon_tile.dart';
 import '../providers/vertex.dart';
 import '../size_config.dart';
-import 'dart:math';
 
 import '../providers/verticals.dart';
 import '../widgets/main_drawer.dart';
@@ -37,6 +38,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
   BitmapDescriptor weIcon;
   BitmapDescriptor srocIcon;
   BitmapDescriptor emIcon;
+
+  String selected = "all";
 
   _getLoc() async {
     _center = new LatLng(17.445842363432902, 78.34941146641764);
@@ -69,117 +72,107 @@ class _MapViewScreenState extends State<MapViewScreen> {
   Widget build(BuildContext context) {
     final verticalsData = Provider.of<Verticals>(context);
     final verticals = verticalsData.items;
-    if (!_loading)
-      verticals.forEach((vertical) {
-        vertical.vertices.forEach((vertex) {
-          _markers.add(Marker(
-            markerId: MarkerId(vertex.data['name']),
-            position: LatLng(vertex.data['latitude'], vertex.data['longitude']),
-            infoWindow: InfoWindow(
-              title: vertical.title,
-              snippet: vertex.data['node_id'],
-            ),
-            icon: vertex.type == "aq"
-                ? aqIcon
-                : (vertex.type == "cm"
-                    ? cmIcon
-                    : (vertex.type == "wd"
-                        ? wdIcon
-                        : (vertex.type == "wf"
-                            ? wfIcon
-                            : (vertex.type == "we"
-                                ? weIcon
-                                : (vertex.type == "sr_ac"
-                                    ? sracIcon
-                                    : (vertex.type == "sr_aq"
-                                        ? sraqIcon
-                                        : (vertex.type == "sr_em"
-                                            ? sremIcon
-                                            : (vertex.type == "sroc_result"
-                                                ? srocIcon
-                                                : (vertex.type == "sl"
-                                                    ? slIcon
-                                                    : (vertex.type == "s"
-                                                        ? sIcon
-                                                        : (vertex.type == "em"
-                                                            ? emIcon
-                                                            : BitmapDescriptor
-                                                                .defaultMarker))))))))))),
-            onTap: () {
-              showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  isDismissible: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Card(
-                        margin: EdgeInsets.all(10),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          height: min(
-                              (80 * vertex.data.length + 10).ceilToDouble(),
-                              300),
-                          child: ListView.builder(
-                            itemCount: vertex.data.length,
-                            itemBuilder: (_, i) {
-                              String key = vertex.data.keys.elementAt(i);
-                              if (key == "Timestamp" ||
-                                  key == "observationDateTime") {
-                                DateTime dt = new DateFormat("yyyy-MM-dd")
-                                    .parse(vertex.data[key]);
-                                vertex.data[key] =
-                                    dt.toString().substring(0, 10);
-                              }
-                              return Card(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: getProportionateScreenWidth(4), horizontal: getProportionateScreenHeight(15)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.cyan,
-                                        child: Padding(
-                                            padding: EdgeInsets.all(5),
-                                            child: FittedBox(
-                                                child: Text(
-                                              (i + 1).toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ))),
-                                      ),
-                                      title: Text(key),
-                                      trailing: FittedBox(
-                                          child: Text(
-                                              vertex.data[key].toString())),
-                                    ),
-                                  ));
-                            },
-                          ),
-                        ));
-                  });
-            },
-          ));
-        });
-      });
-
+    if (!_loading) {
+      for (int i = 0; i < verticals.length; i++) {
+        if (selected == verticals[i].title || selected == "all")
+          for (int j = 0; j < verticals[i].vertices.length; j++) {
+            Vertex vertex = verticals[i].vertices[j];
+            _markers.add(Marker(
+              markerId: MarkerId(vertex.data['node_id']),
+              position:
+                  LatLng(vertex.data['latitude'], vertex.data['longitude']),
+              infoWindow: InfoWindow(
+                title: verticals[i].title,
+                snippet: vertex.data['node_id'],
+              ),
+              icon: getIcon(vertex),
+              onTap: () {
+                showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    isDismissible: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DataContainer(vertex: vertex);
+                    });
+              },
+            ));
+          }
+      }
+    }
     return Scaffold(
       drawer: MyDrawer(),
       body: _loading
           ? Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 17.0,
-                  ),
-                  markers: Set<Marker>.of(_markers),
+          : AnimatedStack(
+              backgroundColor: Color(0xff321B4A),
+              fabBackgroundColor: Color(0xffEB456F),
+              buttonIcon: Icons.menu,
+              foregroundWidget: GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 17.0,
                 ),
-              ],
+                mapToolbarEnabled: false,
+                zoomControlsEnabled: false,
+                markers: Set<Marker>.of(_markers),
+              ),
+              columnWidget: Container(
+                height: getProportionateScreenHeight(650),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: verticals.length,
+                  itemBuilder: (ctx, i) {
+                    return Column(
+                      children: [
+                        SizedBox(height: getProportionateScreenHeight(20)),
+                        IconTile(
+                          width: getProportionateScreenWidth(60),
+                          height: getProportionateScreenHeight(70),
+                          vertical: verticals[i].title,
+                          onSelection: () => onSelection(verticals[i].title),
+                          icon: ImageIcon(
+                            AssetImage(
+                                "assets/icon/" + verticals[i].title + ".png"),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              bottomWidget: GestureDetector(
+                onTap: () => onSelection("all"),
+                child: Container(
+                  padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                  child: 
+                    Text(
+                      "Show All",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  decoration: BoxDecoration(
+                    color: Color(0xff645478),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  width: getProportionateScreenHeight(260),
+                  height: getProportionateScreenHeight(50),
+                ),
+              ),
             ),
     );
+  }
+
+  void onSelection(String _selection) {
+    setState(() {
+      _markers.clear();
+      selected = _selection;
+    });
   }
 
   Future<void> setCustomMapPin() async {
@@ -208,5 +201,35 @@ class _MapViewScreenState extends State<MapViewScreen> {
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/wd.png');
     wfIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/wf.png');
+  }
+
+  BitmapDescriptor getIcon(Vertex vertex) {
+    BitmapDescriptor icon = vertex.type == "aq"
+        ? aqIcon
+        : (vertex.type == "cm"
+            ? cmIcon
+            : (vertex.type == "wd"
+                ? wdIcon
+                : (vertex.type == "wf"
+                    ? wfIcon
+                    : (vertex.type == "we"
+                        ? weIcon
+                        : (vertex.type == "sr_ac"
+                            ? sracIcon
+                            : (vertex.type == "sr_aq"
+                                ? sraqIcon
+                                : (vertex.type == "sr_em"
+                                    ? sremIcon
+                                    : (vertex.type == "sroc_result"
+                                        ? srocIcon
+                                        : (vertex.type == "sl"
+                                            ? slIcon
+                                            : (vertex.type == "s"
+                                                ? sIcon
+                                                : (vertex.type == "em"
+                                                    ? emIcon
+                                                    : BitmapDescriptor
+                                                        .defaultMarker)))))))))));
+    return icon;
   }
 }
