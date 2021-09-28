@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:scrc/providers/vertical.dart';
+// import 'package:scrc/providers/vertical.dart';
 
 import '../../../size_config.dart';
 
 class ProductDescription extends StatelessWidget {
   const ProductDescription({
     Key key,
-    @required this.vertical,
+    @required this.verticalTitle,
   }) : super(key: key);
 
-  final Vertical vertical;
+  final String verticalTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ProductDescription extends StatelessWidget {
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Text(
-            vertical.title,
+            verticalTitle,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),

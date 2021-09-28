@@ -16,13 +16,13 @@ class MyDrawer extends StatelessWidget {
           automaticallyImplyLeading: false,
         ),
         Container(
-          width: getProportionateScreenHeight(200),
+          width: getProportionateScreenWidth(250),
           height: getProportionateScreenHeight(120),
           decoration: BoxDecoration(
               image: DecorationImage(
                   image:
-                      AssetImage("assets/icon/smartCity_livingLab.png"),
-                  fit: BoxFit.cover)),
+                      AssetImage("assets/icon/living_labs.png"),
+                  fit: BoxFit.contain)),
         ),
         Divider(),
         ListTile(

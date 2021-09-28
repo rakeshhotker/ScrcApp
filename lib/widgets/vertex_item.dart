@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrc/providers/vertex.dart';
+import 'package:scrc/screens/graph_screen.dart';
 import 'package:scrc/widgets/data_container.dart';
 
 import '../size_config.dart';
@@ -35,13 +36,13 @@ class _VertexItemState extends State<VertexItem> {
                   children: [
                     IconButton(
                         icon: Icon(Icons.graphic_eq_outlined),
-                        onPressed: () {}),
+                        onPressed: () {``
+                          Navigator.of(context).pushNamed(GraphScreen.routeName, arguments: [widget.vertex.nodeId, widget.vertex.type]);
+                        }),
                     IconButton(
                         icon: Icon(
                             _expanded ? Icons.expand_less : Icons.expand_more),
-                        onPressed: () {
-                          setState(() {
-                            _expanded = !_expanded;
+                        onPressed: () {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
                           });
                         }),
                   ],

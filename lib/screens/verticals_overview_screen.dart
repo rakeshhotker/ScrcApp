@@ -8,7 +8,8 @@ import '../widgets/verticals_grid.dart';
 class VerticalsOverviewScreen extends StatefulWidget {
   static const routeName = "/verticals";
   @override
-  _VerticalsOverviewScreenState createState() => _VerticalsOverviewScreenState();
+  _VerticalsOverviewScreenState createState() =>
+      _VerticalsOverviewScreenState();
 }
 
 class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
@@ -25,7 +26,7 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
         setState(() {
           _isloading = false;
         });
-      });    
+      });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -35,10 +36,12 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Verticals"),
+        title: Text("Dashboard"),
       ),
       drawer: MyDrawer(),
-      body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
+      body: _isloading
+          ? Center(child: CircularProgressIndicator())
+          : VerticalsGrid(),
     );
   }
 }

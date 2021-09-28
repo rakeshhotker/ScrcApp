@@ -174,20 +174,20 @@
 //                         child: Row(
 //                           crossAxisAlignment: CrossAxisAlignment.end,
 //                           children: [
-//                             Container(
-//                               width: getProportionateScreenHeight(100),
-//                               height: getProportionateScreenHeight(100),
-//                               margin: EdgeInsets.only(
-//                                 top: getProportionateScreenHeight(8),
-//                                 right: getProportionateScreenHeight(10),
-//                               ),
-//                               decoration: BoxDecoration(
-//                                   borderRadius: BorderRadius.circular(50),
-//                                   image: DecorationImage(
-//                                       image: NetworkImage(
-//                                           _imageUrlController.text),
-//                                       fit: BoxFit.cover)),
-//                             ),
+                            // Container(
+                            //   width: getProportionateScreenHeight(100),
+                            //   height: getProportionateScreenHeight(100),
+                            //   margin: EdgeInsets.only(
+                            //     top: getProportionateScreenHeight(8),
+                            //     right: getProportionateScreenHeight(10),
+                            //   ),
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(50),
+                            //       image: DecorationImage(
+                            //           image: NetworkImage(
+                            //               _imageUrlController.text),
+                            //           fit: BoxFit.cover)),
+                            // ),
 //                             Divider(),
 //                             Expanded(
 //                               child: Container(

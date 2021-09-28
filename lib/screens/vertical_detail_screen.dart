@@ -16,22 +16,24 @@ class VerticalDetailScreen extends StatefulWidget {
 }
 
 class _VerticalDetailScreenState extends State<VerticalDetailScreen> {
-  final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   List<Vertex> _vertices = [];
   List<Vertex> _filteredVertices = [];
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle;
+  var args;
   var verticalTitle;
   var vertical;
   bool _isLoading = true;
+  String type;
 
   @override
   void didChangeDependencies() {
     if (_isLoading) {
       setState(() {});
-      verticalTitle = ModalRoute.of(context).settings.arguments as String;
-      vertical = Provider.of<Verticals>(context).findByTitle(verticalTitle);
+      args = ModalRoute.of(context).settings.arguments as List;
+      vertical = Provider.of<Verticals>(context).findByTitle(args[0]);
+      verticalTitle = args[1];
       _appBarTitle = Text(verticalTitle);
       vertical.vertices.forEach((element) {
         _vertices.add(element);
@@ -65,14 +67,9 @@ class _VerticalDetailScreenState extends State<VerticalDetailScreen> {
       this._searchIcon = Icon(Icons.search);
       this._appBarTitle = Text(verticalTitle);
       _filteredVertices = _vertices;
-      _filter.clear();
+      _searchText = "";
     }
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -87,48 +84,50 @@ class _VerticalDetailScreenState extends State<VerticalDetailScreen> {
       });
       _filteredVertices = tmp;
     }
-    return _isLoading ? Center(child: CircularProgressIndicator()) : Scaffold(
-      appBar: AppBar(title: _appBarTitle, actions: [
-        IconButton(
-          icon: _searchIcon,
-          onPressed: _searchPressed,
-        ),
-      ]),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(
-              width: getProportionateScreenWidth(238),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Hero(
-                  tag: vertical.title.toString(),
-                  child: Image.asset(
-                    "assets/icon/" + vertical.title + ".png",
-                    fit: BoxFit.cover,
+    return _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            appBar: AppBar(title: _appBarTitle, actions: [
+              IconButton(
+                icon: _searchIcon,
+                onPressed: _searchPressed,
+              ),
+            ]),
+            body: SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: getProportionateScreenWidth(238),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Hero(
+                        tag: vertical.title.toString(),
+                        child: Image.asset(
+                          "assets/dashboard_icon/" + vertical.title + ".png",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  TopRoundedContainer(
+                      color: Colors.white,
+                      child: ProductDescription(verticalTitle: verticalTitle)),
+                  SizedBox(),
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _filteredVertices.length,
+                    itemBuilder: (ctx, i) {
+                      return VertexItem(
+                        index: i + 1,
+                        vertex: _filteredVertices[i],
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
-            TopRoundedContainer(
-                color: Colors.white,
-                child: ProductDescription(vertical: vertical)),
-            SizedBox(),
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _filteredVertices.length,
-              itemBuilder: (ctx, i) {
-                return VertexItem(
-                  index: i + 1,
-                  vertex: _filteredVertices[i],
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

@@ -48,7 +48,7 @@ class DataContainer extends StatelessWidget {
                                                 color: Colors.black),
                                           ))),
                                     ),
-                                    title: Text(key),
+                                    title: Text(key.replaceAll("_", " ").toUpperCase()),
                                     trailing: FittedBox(
                                         child: Text(
                                             vertex.data[key].toString())),

@@ -84,7 +84,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
               infoWindow: InfoWindow(
                 title: verticals[i].title,
                 snippet: vertex.data['node_id'],
-              ),
+              ),draggable: true,
               icon: getIcon(vertex),
               onTap: () {
                 showModalBottomSheet(
@@ -147,7 +147,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
               bottomWidget: GestureDetector(
                 onTap: () => onSelection("all"),
                 child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                  padding: EdgeInsets.all(getProportionateScreenHeight(15)),
                   child: 
                     Text(
                       "Show All",
@@ -194,7 +194,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_em.png');
     srocIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/sroc_result.png');
+        'assets/icon/sr_oc.png');
     weIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/we.png');
     wdIcon = await BitmapDescriptor.fromAssetImage(
@@ -220,7 +220,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
                                 ? sraqIcon
                                 : (vertex.type == "sr_em"
                                     ? sremIcon
-                                    : (vertex.type == "sroc_result"
+                                    : (vertex.type == "sr_oc"
                                         ? srocIcon
                                         : (vertex.type == "sl"
                                             ? slIcon
