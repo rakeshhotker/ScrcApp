@@ -36,21 +36,26 @@ class _VertexItemState extends State<VertexItem> {
                   children: [
                     IconButton(
                         icon: Icon(Icons.graphic_eq_outlined),
-                        onPressed: () {``
-                          Navigator.of(context).pushNamed(GraphScreen.routeName, arguments: [widget.vertex.nodeId, widget.vertex.type]);
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(GraphScreen.routeName,
+                              arguments: [
+                                widget.vertex.nodeId,
+                                widget.vertex.type
+                              ]);
                         }),
                     IconButton(
                         icon: Icon(
                             _expanded ? Icons.expand_less : Icons.expand_more),
-                        onPressed: () {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                        onPressed: () {
+                          setState(() {
+                            _expanded = !_expanded;
                           });
                         }),
                   ],
                 ),
               ),
             ),
-            if (_expanded)
-              DataContainer(vertex: widget.vertex)
+            if (_expanded) DataContainer(vertex: widget.vertex)
           ],
         ));
   }

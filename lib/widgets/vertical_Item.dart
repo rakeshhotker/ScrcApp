@@ -26,9 +26,10 @@ class _VerticalItemState extends State<VerticalItem> {
           if (prodName == name) {
             prodData.forEach((key, value) {
               // Double val = value as Double;
-              if (key != "nodes" && key != "name")
-                readings[key] = value.toStringAsFixed(2);
-              if (key == "name") readings[key] = value;
+              // if (key != "nodes" && key != "name")
+              //   readings[key] = value.toStringAsFixed(2);
+              // if (key == "name") readings[key] = value;
+              if (key != "nodes") readings[key] = value;
             });
           }
         });
@@ -63,42 +64,42 @@ class _VerticalItemState extends State<VerticalItem> {
     List<Widget> r = [];
     if (!_isLoading) {
       readings.forEach((key, value) {
-        if(key != "name")
-        r.add(Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              FittedBox(
-                child: Text(
-                  value.toString(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    letterSpacing: -0.2,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: FittedBox(
+        if (key != "name")
+          r.add(Padding(
+            padding: EdgeInsets.all(8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                FittedBox(
                   child: Text(
-                    key.toString().toUpperCase().replaceAll("_", " "),
+                    value.toString(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Colors.grey.withOpacity(0.5),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      letterSpacing: -0.2,
+                      color: Colors.black,
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ));
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: FittedBox(
+                    child: Text(
+                      key.toString().toUpperCase().replaceAll("_", " "),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: Colors.grey.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
       });
     }
     return _isLoading
@@ -157,15 +158,17 @@ class _VerticalItemState extends State<VerticalItem> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 4, bottom: 8, top: 16),
-                            child: _isLoading ? Center(child: CircularProgressIndicator()) : Text(
-                              readings['name'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  letterSpacing: -0.1,
-                                  color: Colors.black),
-                            ),
+                            child: _isLoading
+                                ? Center(child: CircularProgressIndicator())
+                                : Text(
+                                    readings['name'],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        letterSpacing: -0.1,
+                                        color: Colors.black),
+                                  ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,15 +181,18 @@ class _VerticalItemState extends State<VerticalItem> {
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 4, bottom: 3),
-                                    child: _isLoading ? Center(child: CircularProgressIndicator()) : Text(
-                                      vertical.vertices.length.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 32,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
+                                    child: _isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : Text(
+                                            vertical.vertices.length.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 32,
+                                              color: Colors.blue,
+                                            ),
+                                          ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -204,20 +210,24 @@ class _VerticalItemState extends State<VerticalItem> {
                                   ),
                                 ],
                               ),
-                              _isLoading ? Center(child: CircularProgressIndicator()) : Container(
-                                width: getProportionateScreenHeight(100),
-                                height: getProportionateScreenHeight(100),
-                                margin: EdgeInsets.only(
-                                  right: getProportionateScreenHeight(40),
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    image: DecorationImage(
-                                        image: AssetImage("assets/dashboard_icon/" +
-                                            vertical.title +
-                                            ".png"),
-                                        fit: BoxFit.cover)),
-                              )
+                              _isLoading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Container(
+                                      width: getProportionateScreenHeight(100),
+                                      height: getProportionateScreenHeight(100),
+                                      margin: EdgeInsets.only(
+                                        right: getProportionateScreenHeight(40),
+                                      ),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/dashboard_icon/" +
+                                                      vertical.title +
+                                                      ".png"),
+                                              fit: BoxFit.cover)),
+                                    )
                             ],
                           )
                         ],
