@@ -74,31 +74,33 @@ class _MapViewScreenState extends State<MapViewScreen> {
     final verticals = verticalsData.items;
     if (!_loading) {
       for (int i = 0; i < verticals.length; i++) {
-        if (selected == verticals[i].title || selected == "all")
-          for (int j = 0; j < verticals[i].vertices.length; j++) {
-            Vertex vertex = verticals[i].vertices[j];
-            _markers.add(Marker(
-              markerId: MarkerId(vertex.data['node_id']),
-              position:
-                  LatLng(vertex.data['latitude'], vertex.data['longitude']),
-              infoWindow: InfoWindow(
-                title: verticals[i].title,
-                snippet: vertex.data['node_id'],
-              ),draggable: true,
-              icon: getIcon(vertex),
-              onTap: () {
-                showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    isDismissible: true,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DataContainer(vertex: vertex);
-                    });
-              },
-            ));
-          }
+        if (selected == verticals[i].title || selected == "all") {
+            for (int j = 0; j < verticals[i].vertices.length; j++) {
+              Vertex vertex = verticals[i].vertices[j];
+              _markers.add(Marker(
+                markerId: MarkerId(vertex.data['node_id']),
+                position:
+                    LatLng(vertex.data['latitude'], vertex.data['longitude']),
+                infoWindow: InfoWindow(
+                  title: verticals[i].title,
+                  snippet: vertex.data['node_id'],
+                ),
+                draggable: true,
+                // icon: getIcon(vertex),
+                onTap: () {
+                  showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      isDismissible: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DataContainer(vertex: vertex);
+                      });
+                },
+              ));
+            }
+        }
       }
     }
     return Scaffold(
@@ -148,12 +150,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 onTap: () => onSelection("all"),
                 child: Container(
                   padding: EdgeInsets.all(getProportionateScreenHeight(15)),
-                  child: 
-                    Text(
-                      "Show All",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: Text(
+                    "Show All",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
                   decoration: BoxDecoration(
                     color: Color(0xff645478),
                     borderRadius: BorderRadius.all(
@@ -193,8 +194,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
     sremIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_em.png');
     srocIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/sr_oc.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_oc.png');
     weIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/we.png');
     wdIcon = await BitmapDescriptor.fromAssetImage(
