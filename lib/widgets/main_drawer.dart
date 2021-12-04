@@ -14,6 +14,12 @@ class MyDrawer extends StatelessWidget {
         AppBar(
           title: Text("SCRC Lab"),
           automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            color: Color(0XFF8B8B8B), fontSize: 18,
+          ),
+          elevation: 5,
+          iconTheme: IconThemeData(color: Colors.black)
         ),
         Container(
           width: getProportionateScreenWidth(250),

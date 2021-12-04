@@ -87,7 +87,15 @@ class _VerticalDetailScreenState extends State<VerticalDetailScreen> {
     return _isLoading
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
-            appBar: AppBar(title: _appBarTitle, actions: [
+            appBar: AppBar(
+              title: _appBarTitle, 
+              backgroundColor: Colors.white,
+              titleTextStyle: TextStyle(
+                color: Color(0XFF8B8B8B), fontSize: 18
+              ),
+              elevation: 5,
+              iconTheme: IconThemeData(color: Colors.black),
+              actions: [
               IconButton(
                 icon: _searchIcon,
                 onPressed: _searchPressed,

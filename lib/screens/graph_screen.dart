@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:bezier_chart/bezier_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:scrc/providers/graph_data.dart';
 import 'package:scrc/providers/verticals.dart';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class GraphScreen extends StatefulWidget {
   static const routeName = '/verticals/detail/graph';
@@ -17,21 +18,19 @@ class _GraphScreenState extends State<GraphScreen> {
   var _isInit = true;
   var _isloading = false;
   var node;
-  var nodeId;
+  String nodeId;
   var type;
   var verticalsData;
   var graph;
-  var len;
-  var start =
-      DateTime.now().subtract(Duration(days: 3, hours: 3)).toIso8601String();
-  Map<String, List<DataPoint<double>>> data;
+  DateTime rangeStartDate =
+      DateTime.now().subtract(Duration(days: 3, hours: 3));
+  DateTime rangeEndDate = DateTime.now().subtract(Duration(days: 3));
 
   Future<void> getGraphReadings() async {
-    final end = DateTime.now().subtract(Duration(days: 3)).toIso8601String();
     String url = "https://smartcitylivinglab.iiit.ac.in/graph/?start=";
-    url += start;
+    url += rangeStartDate.toIso8601String();
     url += "&end=";
-    url += end;
+    url += rangeEndDate.toIso8601String();
     url += "&type=";
     url += type.toUpperCase().replaceAll("_", "-");
     url += "&nodes=";
@@ -57,8 +56,6 @@ class _GraphScreenState extends State<GraphScreen> {
       nodeId = node[0];
       type = node[1];
       verticalsData = Provider.of<Verticals>(context);
-      len = 0;
-      data = Map();
       getGraphReadings().then((value) {
         setState(() {
           _isloading = false;
@@ -69,191 +66,149 @@ class _GraphScreenState extends State<GraphScreen> {
     super.didChangeDependencies();
   }
 
+  ZoomPanBehavior _zoomPanBehavior;
+  @override
+  void initState() {
+    _zoomPanBehavior = ZoomPanBehavior(
+      enableDoubleTapZooming: true,
+      enablePinching: true,
+      enableSelectionZooming: true,
+      enablePanning: true,
+      zoomMode: ZoomMode.xy,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isloading) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
+      Map<String, List<double>> data = Map();
+      List<String> dates = [];
       graph.forEach((key, value) {
-        (value as List).forEach((element) {
-          len++;
-          double k = 0;
-          element.forEach((ke, val) {
-            if (ke != "node_id" &&
-                ke != "name" &&
-                ke != "latitude" &&
-                ke != "longitude" &&
-                ke != "type" &&
-                ke != "created_at" &&
-                ke != "occupancy1" &&
-                ke != "occupancy2" &&
-                ke != "occupancy3" &&
-                ke != "occupancy4") {
-              if (data[ke] == null) {
-                data[ke] = [];
+        if (key != "parameters" && key != "nodes")
+          (value as List).forEach((element) {
+            element.forEach((ke, val) {
+              if (ke != "node_id" &&
+                  ke != "name" &&
+                  ke != "latitude" &&
+                  ke != "longitude" &&
+                  ke != "type" &&
+                  ke != "created_at" &&
+                  ke != "occupancy1" &&
+                  ke != "occupancy2" &&
+                  ke != "occupancy3" &&
+                  ke != "occupancy4") {
+                if (data[ke] == null) {
+                  data[ke] = [];
+                }
+                data[ke.toString()].add((val != null) ? val : 0.0);
+              } else {
+                if (ke == "created_at") {
+                  dates.add(val);
+                }
               }
-              data[ke.toString()].add(DataPoint<double>(
-                  value: (val != null) ? val : 0.0, xAxis: k));
-              k += 1;
-            }
+            });
           });
-        });
       });
-      List<BezierLine> plots = [];
-      if (data.length > 0)
-        data.forEach((key, value) {
-          plots.add(BezierLine(
-            lineColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                .withOpacity(1.0),
-            label: key.toUpperCase().replaceAll("_", " "),
-            lineStrokeWidth: 2.0,
-            data: value,
+      List<String> names = [];
+      List<List<GraphData>> lines = [];
+      data.forEach((key, value) {
+        names.add(key);
+        List<GraphData> tmp = [];
+        for (int i = 0; i < value.length; i++) {
+          tmp.add(GraphData(
+            value: value[i],
+            year: DateFormat('dd MMM yyyy \n kk:mm').format(DateTime.parse(dates[i])) ,
           ));
-        });
-      else
-        plots.add(BezierLine(
-          lineColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-              .withOpacity(1.0),
-          label: "",
-          lineStrokeWidth: 2.0,
-          data: [
-            DataPoint<double>(value: 0.0, xAxis: 0),
-          ],
-        ));
-      List<double> x = [];
-      if (len > 0)
-        for (int i = 0; i < len; i++) {
-          x.add(i.toDouble());
         }
-      else
-        x.add(0);
+        lines.add(tmp);
+      });
+
       return Scaffold(
-          appBar: AppBar(title: Text(nodeId)),
+          appBar: AppBar(
+            title: Text(nodeId),
+            backgroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Color(0XFF8B8B8B), fontSize: 18
+            ),
+            elevation: 5,
+            iconTheme: IconThemeData(color: Colors.black),
+          ),
           body: Container(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        start = DateTime.now()
-                            .subtract(Duration(days: 365))
-                            .toIso8601String();
-                        getGraphReadings().then((value) {
-                          setState(() {
-                            _isloading = false;
-                          });
-                        });
+                ElevatedButton(
+                  onPressed: () {
+                    return showDialog<void>(
+                      context: context,
+                      barrierDismissible: false, // user must tap button!
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Select Starting date'),
+                          content: SingleChildScrollView(
+                            child: SfDateRangePicker(
+                              view: DateRangePickerView.month,
+                              selectionMode:
+                                  DateRangePickerSelectionMode.range,
+                              onSelectionChanged:
+                                  (DateRangePickerSelectionChangedArgs
+                                      args) {
+                                if (args.value is PickerDateRange) {
+                                  rangeStartDate = args.value.startDate;
+                                  rangeEndDate = args.value.endDate;
+                                }
+                              },
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Done'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  _isloading = true;
+                                });
+                                getGraphReadings().then((value) {
+                                  setState(() {
+                                    _isloading = false;
+                                  });
+                                });
+                              },
+                            ),
+                          ],
+                        );
                       },
-                      child: Text("Last Year"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        start = DateTime.now()
-                            .subtract(Duration(days: 30))
-                            .toIso8601String();
-                        getGraphReadings().then((value) {
-                          setState(() {
-                            _isloading = false;
-                          });
-                        });
-                      },
-                      child: Text("Last month"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        start = DateTime.now()
-                            .subtract(Duration(days: 7))
-                            .toIso8601String();
-                        getGraphReadings().then((value) {
-                          setState(() {
-                            _isloading = false;
-                          });
-                        });
-                      },
-                      child: Text("Last week"),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        start = DateTime.now()
-                            .subtract(Duration(days: 1))
-                            .toIso8601String();
-                        getGraphReadings().then((value) {
-                          setState(() {
-                            _isloading = false;
-                          });
-                        });
-                      },
-                      child: Text("Last Day"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        start = DateTime.now()
-                            .subtract(Duration(hours: 3))
-                            .toIso8601String();
-                        getGraphReadings().then((value) {
-                          setState(() {
-                            _isloading = false;
-                          });
-                        });
-                      },
-                      child: Text("Last 3 hours"),
-                    ),
-                  ],
+                    );
+                  },
+                  child: Text("Pick Dates"),
                 ),
                 Center(
-                  child: Card(
-                    elevation: 20,
-                    margin: EdgeInsets.all(8.0),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 2,
-                      width: MediaQuery.of(context).size.width,
-                      child: BezierChart(
-                        bezierChartScale: BezierChartScale.CUSTOM,
-                        xAxisCustomValues: x,
-                        footerValueBuilder: (double value) {
-                          return "";
-                        },
-                        series: plots,
-                        config: BezierChartConfig(
-                          verticalIndicatorStrokeWidth: 2.0,
-                          verticalIndicatorColor: Colors.black12,
-                          showVerticalIndicator: true,
-                          bubbleIndicatorLabelStyle:
-                              const TextStyle(fontWeight: FontWeight.normal,),
-                          bubbleIndicatorTitleStyle:
-                              const TextStyle(color: Colors.white),
-                          verticalIndicatorFixedPosition: true,
-                          contentWidth:
-                              MediaQuery.of(context).size.width * (len / 5),
-                          snap: false,
-                          backgroundColor: Colors.white,
-                          displayLinesXAxis: true,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: SfCartesianChart(
+                        zoomPanBehavior: _zoomPanBehavior,
+                        primaryXAxis: CategoryAxis(
+                          labelIntersectAction: AxisLabelIntersectAction.rotate45,
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w600
+                          )
                         ),
-                      ),
-                    ),
+                        enableAxisAnimation: true,
+                        legend: Legend(isVisible: true),
+                        series: <CartesianSeries>[
+                          for (int i = 0; i < lines.length; i++)
+                            LineSeries<GraphData, String>(
+                                name: names[i],
+                                dataSource: lines[i],
+                                xValueMapper: (GraphData data, _) =>
+                                    data.year,
+                                yValueMapper: (GraphData data, _) =>
+                                    data.value,
+                            )
+                        ]),
                   ),
                 ),
               ],
@@ -262,3 +217,5 @@ class _GraphScreenState extends State<GraphScreen> {
     }
   }
 }
+
+

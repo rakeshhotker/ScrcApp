@@ -6,9 +6,8 @@ class Vertical with ChangeNotifier {
   final String title;
   final List<Vertex> vertices;
 
-  Vertical(
-      {
-      @required this.title,
-      @required this.vertices,
-      });
+  Vertical({
+    @required this.title,
+    @required this.vertices,
+  });
 }
