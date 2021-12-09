@@ -23,8 +23,8 @@ class _GraphScreenState extends State<GraphScreen> {
   var verticalsData;
   var graph;
   DateTime rangeStartDate =
-      DateTime.now().subtract(Duration(days: 3, hours: 3));
-  DateTime rangeEndDate = DateTime.now().subtract(Duration(days: 3));
+      DateTime.now().subtract(Duration(hours: 3));
+  DateTime rangeEndDate = DateTime.now();
 
   Future<void> getGraphReadings() async {
     String url = "https://smartcitylivinglab.iiit.ac.in/graph/?start=";
@@ -191,7 +191,7 @@ class _GraphScreenState extends State<GraphScreen> {
                     child: SfCartesianChart(
                         zoomPanBehavior: _zoomPanBehavior,
                         primaryXAxis: CategoryAxis(
-                          labelIntersectAction: AxisLabelIntersectAction.rotate45,
+                          labelIntersectAction: AxisLabelIntersectAction.multipleRows,
                           labelStyle: TextStyle(
                             fontWeight: FontWeight.w600
                           )

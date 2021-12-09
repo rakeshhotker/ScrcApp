@@ -52,7 +52,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   void initState() {
     _loading = true;
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     setCustomMapPin().then((value) {
       _getLoc();
     });
@@ -60,7 +60,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
