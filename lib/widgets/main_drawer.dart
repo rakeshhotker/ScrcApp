@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:scrc/screens/about.dart';
+import 'package:scrc/screens/summary_detail_screen.dart';
 
 import '../screens/map_view_screen.dart';
 import '../screens/verticals_overview_screen.dart';
@@ -27,7 +29,7 @@ class MyDrawer extends StatelessWidget {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image:
-                      AssetImage("assets/icon/living_labs.png"),
+                      AssetImage("assets/icon/smartCity_livingLab.png"),
                   fit: BoxFit.contain)),
         ),
         Divider(),
@@ -55,6 +57,34 @@ class MyDrawer extends StatelessWidget {
               }
             }
             Navigator.of(context).pushReplacementNamed(MapViewScreen.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.shop),
+          title: Text("Summary"),
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(SummaryDetailScreen.routeName);
+          },
+        ),
+       
+      Divider(),
+        ListTile(
+          leading: Icon(Icons.shop),
+          title: Text("About"),
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(AboutScreen.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.shop),
+          title: Text("License"),
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(VerticalsOverviewScreen.routeName);
           },
         ),
       ]),

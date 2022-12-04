@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scrc/providers/summary.dart';
+import 'package:scrc/widgets/summary_details.dart';
 
 import '../providers/verticals.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/verticals_grid.dart';
 
-class VerticalsOverviewScreen extends StatefulWidget {
-  static const routeName = "/verticals";
+class SummaryDetailScreen extends StatefulWidget {
+  static const routeName = "/summary";
   @override
-  _VerticalsOverviewScreenState createState() =>
-      _VerticalsOverviewScreenState();
+  _SummaryDetailScreenState createState() =>
+      _SummaryDetailScreenState();
 }
 
-class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
+class _SummaryDetailScreenState extends State<SummaryDetailScreen> {
   var _isInit = true;
   var _isloading = false;
 
@@ -22,7 +24,7 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
       setState(() {
         _isloading = true;
       });
-      Provider.of<Verticals>(context).fetchAndSetVerticals().then((value) {
+      Provider.of<Summaries>(context).fetchAndSetSummary().then((value) {
         setState(() {
           _isloading = false;
         });
@@ -33,13 +35,8 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-     return _isloading
+    return _isloading
         ? Scaffold(
             // appBar: AppBar(
             //   title: Text("Verticals"),
@@ -51,14 +48,13 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text("Verticals" , style : TextStyle(
+            title: Text("Summary" , style : TextStyle(
             color: Colors.black 
         ) ),
       ),
             drawer: MyDrawer(),
             body: Center(
-                child: VerticalsGrid(),
+                child: SummaryDetails(),
             // body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
             )
           );

@@ -38,7 +38,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   BitmapDescriptor weIcon;
   BitmapDescriptor srocIcon;
   BitmapDescriptor emIcon;
-
+  BitmapDescriptor wnIcon;
   String selected = "all";
 
   _getLoc() async {
@@ -72,6 +72,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   Widget build(BuildContext context) {
     final verticalsData = Provider.of<Verticals>(context);
     final verticals = verticalsData.items;
+    // debugPrint(verticals)
     if (!_loading) {
       for (int i = 0; i < verticals.length; i++) {
         if (selected == verticals[i].title || selected == "all")
@@ -85,7 +86,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 title: verticals[i].title,
                 snippet: vertex.data['node_id'],
               ),draggable: true,
-              // icon: getIcon(vertex),
+              icon: getIcon(vertex),
               onTap: () {
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
@@ -189,7 +190,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
     sracIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_ac.png');
     sraqIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_aq.png.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_aq.png');
     sremIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_em.png');
     srocIcon = await BitmapDescriptor.fromAssetImage(
@@ -201,6 +202,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/wd.png');
     wfIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/wf.png');
+    wnIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),'assets/icon/wn.png');
   }
 
   BitmapDescriptor getIcon(Vertex vertex) {
@@ -228,8 +231,10 @@ class _MapViewScreenState extends State<MapViewScreen> {
                                                 ? sIcon
                                                 : (vertex.type == "em"
                                                     ? emIcon
+                                                  : (vertex.type =="wn" 
+                                                    ? wnIcon
                                                     : BitmapDescriptor
-                                                        .defaultMarker)))))))))));
+                                                        .defaultMarker))))))))))));
     return icon;
   }
 }
