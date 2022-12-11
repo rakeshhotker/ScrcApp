@@ -13,18 +13,19 @@ class _AboutScreenState extends State<AboutScreen> {
     // TODO: implement build
     // throw UnimplementedError();
     return Scaffold(
-      appBar: AppBar(
-        title: Text("About" , style : TextStyle(
-          color: Colors.black 
-        ) ),
-      ),
-      drawer: MyDrawer(),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Text(
-          "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32."
+        appBar: AppBar(
+          title: Text("About", style: TextStyle(color: Colors.black)),
         ),
-      )
-    );
+        drawer: MyDrawer(),
+        body: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Image.asset("assets/dashboard_icon/group_photo.jpg"),
+                SizedBox(height: 20),
+                Text(
+                    "The primary goal of this innovation initiative is to enable discovering, sourcing, validating, proving and taking to production, the various Smart City innovations, solutions and products.And also bringing in the key stakeholders- governments, research, startups, tech companies, smart city players and policy makers.\n\nAt its core is the real world simulation of a Smart City in a lab scale by bringing in the whole IIITH campus, its infrastructure, the students and campus residents, startups, and visitors.\n\nSmart city research centre, thus established is a combine where several research centres at IIIT collaborate and develop solutions for smart cities.The Center leverages IIIT-H ‘s research strengths in both core and domain areas.")
+              ],
+            )));
   }
 }

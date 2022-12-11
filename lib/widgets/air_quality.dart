@@ -12,20 +12,17 @@ class AirQuality extends StatelessWidget {
   AirQuality({this.details});
   @override
   Widget build(BuildContext context) {
-    print(details);
+    // print(details);
     return Container(
-      width: MediaQuery.of(context).size.width*0.9,
+      width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8)
-      ),
+          color: Colors.black, borderRadius: BorderRadius.circular(8)),
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
-        horizontal: getProportionateScreenWidth(16),
-        vertical: getProportionateScreenHeight(16)
-      ),
+          horizontal: getProportionateScreenWidth(16),
+          vertical: getProportionateScreenHeight(16)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,  
+        mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           DetailsTitle(imagePath: 'assets/icon/aq.png', title: 'Air Quality'),
