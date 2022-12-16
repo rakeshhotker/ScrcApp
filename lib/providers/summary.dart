@@ -19,7 +19,8 @@ class Summaries with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetSummary() async {
-    var url = Uri.parse("https://smartcitylivinglab.iiit.ac.in/verticals/avg/");
+    var url = Uri.parse(
+        "https://dashboard.smartcitylivinglab.iiit.ac.in/verticals/avg/");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;

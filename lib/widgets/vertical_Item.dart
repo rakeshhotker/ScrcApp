@@ -17,7 +17,8 @@ class _VerticalItemState extends State<VerticalItem> {
   bool _isLoading = false;
   bool _isInit = true;
   Future<void> fetchAvg(String name) async {
-    var url = Uri.parse("https://smartcitylivinglab.iiit.ac.in/verticals/avg");
+    var url = Uri.parse(
+        "https://dashboard.smartcitylivinglab.iiit.ac.in/verticals/avg");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;

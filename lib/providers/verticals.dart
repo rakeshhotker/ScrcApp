@@ -18,7 +18,7 @@ class Verticals with ChangeNotifier {
 
   Future<void> fetchAndSetVerticals() async {
     var url = Uri.parse(
-        "https://smartcitylivinglab.iiit.ac.in/verticals/all/latest/#");
+        "http://dashboard.smartcitylivinglab.iiit.ac.in/verticals/all/latest/#");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -49,7 +49,7 @@ class Verticals with ChangeNotifier {
     final start =
         DateTime.now().subtract(Duration(days: 3, hours: 3)).toIso8601String();
     final end = DateTime.now().subtract(Duration(days: 3)).toIso8601String();
-    String url = "https://smartcitylivinglab.iiit.ac.in/graph/?start=";
+    String url = "http://dashboard.smartcitylivinglab.iiit.ac.in/graph/?start=";
     url += start;
     url += "&end=";
     url += end;
@@ -68,5 +68,4 @@ class Verticals with ChangeNotifier {
       print(error);
     }
   }
-
 }

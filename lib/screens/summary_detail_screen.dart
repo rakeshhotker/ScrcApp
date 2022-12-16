@@ -10,8 +10,7 @@ import '../widgets/verticals_grid.dart';
 class SummaryDetailScreen extends StatefulWidget {
   static const routeName = "/summary";
   @override
-  _SummaryDetailScreenState createState() =>
-      _SummaryDetailScreenState();
+  _SummaryDetailScreenState createState() => _SummaryDetailScreenState();
 }
 
 class _SummaryDetailScreenState extends State<SummaryDetailScreen> {
@@ -48,15 +47,12 @@ class _SummaryDetailScreenState extends State<SummaryDetailScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-            title: Text("Summary" , style : TextStyle(
-            color: Colors.black 
-        ) ),
-      ),
+              title: Text("Summary", style: TextStyle(color: Colors.black)),
+            ),
             drawer: MyDrawer(),
             body: Center(
-                child: SummaryDetails(),
-            // body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
-            )
-          );
+              child: SummaryDetails(),
+              // body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
+            ));
   }
 }

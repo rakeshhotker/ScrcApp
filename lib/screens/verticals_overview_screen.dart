@@ -39,7 +39,7 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-     return _isloading
+    return _isloading
         ? Scaffold(
             // appBar: AppBar(
             //   title: Text("Verticals"),
@@ -51,16 +51,12 @@ class _VerticalsOverviewScreenState extends State<VerticalsOverviewScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text("Verticals" , style : TextStyle(
-            color: Colors.black 
-        ) ),
-      ),
+              title: Text("Verticals", style: TextStyle(color: Colors.black)),
+            ),
             drawer: MyDrawer(),
             body: Center(
-                child: VerticalsGrid(),
-            // body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
-            )
-          );
+              child: VerticalsGrid(),
+              // body: _isloading ? Center(child: CircularProgressIndicator()) : VerticalsGrid(),
+            ));
   }
 }

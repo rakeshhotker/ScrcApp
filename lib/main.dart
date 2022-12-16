@@ -26,9 +26,8 @@ import './screens/vertical_detail_screen.dart';
 import './screens/summary_detail_screen.dart';
 import './screens/verticals_overview_screen.dart';
 import './theme.dart';
+import 'dart:io';
 // import 'package:home_widget/home_widget.dart';
-
-
 
 // void callbackDispatcher() {
 //   Workmanager().executeTask((taskName, inputData) {
@@ -75,15 +74,21 @@ import './theme.dart';
 //   }
 // }
 
-
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   // Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
   runApp(MyApp());
 }
-
-
 
 class MyApp extends StatefulWidget {
   // static const routeName = "/about";
@@ -181,23 +186,18 @@ class _MyAppState extends State<MyApp> {
   //   Workmanager().cancelByUniqueName('1');
   // }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.white, systemNavigationBarColor: Colors.white));
-    
-    
-      // _titleController.text = "Title";
-      // _messageController.text = "Message";
-      // _sendAndUpdate();
- return MultiProvider(                                                                     
+
+    // _titleController.text = "Title";
+    // _messageController.text = "Message";
+    // _sendAndUpdate();
+    return MultiProvider(
         providers: [
           ChangeNotifierProvider(
             create: (ctx) => Verticals(),
-            
           ),
           ChangeNotifierProvider(
             create: (ctx) => Summaries(),
@@ -208,15 +208,14 @@ class _MyAppState extends State<MyApp> {
           theme: theme(),
           home: VerticalsOverviewScreen(),
           routes: {
-            VerticalsOverviewScreen.routeName: (ctx) => VerticalsOverviewScreen(), 
+            VerticalsOverviewScreen.routeName: (ctx) =>
+                VerticalsOverviewScreen(),
             VerticalDetailScreen.routeName: (ctx) => VerticalDetailScreen(),
             GraphScreen.routeName: (ctx) => GraphScreen(),
             SummaryDetailScreen.routeName: (ctx) => SummaryDetailScreen(),
             AboutScreen.routeName: (ctx) => AboutScreen(),
             MapViewScreen.routeName: (ctx) => MapViewScreen(),
           },
-        )
-    );
+        ));
   }
 }
-
