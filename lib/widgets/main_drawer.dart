@@ -14,22 +14,21 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       child: Column(children: [
         AppBar(
-          title: Text("SCRC Lab"),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          titleTextStyle: TextStyle(
-            color: Color(0XFF8B8B8B), fontSize: 18,
-          ),
-          elevation: 5,
-          iconTheme: IconThemeData(color: Colors.black)
-        ),
+            title: Text("Welcome"),
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Color(0XFF8B8B8B),
+              fontSize: 18,
+            ),
+            elevation: 5,
+            iconTheme: IconThemeData(color: Colors.black)),
         Container(
           width: getProportionateScreenWidth(250),
           height: getProportionateScreenHeight(120),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image:
-                      AssetImage("assets/icon/smartCity_livingLab.png"),
+                  image: AssetImage("assets/icon/smartCity_livingLab.png"),
                   fit: BoxFit.contain)),
         ),
         Divider(),
@@ -68,25 +67,24 @@ class MyDrawer extends StatelessWidget {
                 .pushReplacementNamed(SummaryDetailScreen.routeName);
           },
         ),
-       
-      Divider(),
+
+        Divider(),
         ListTile(
           leading: Icon(Icons.shop),
           title: Text("About"),
           onTap: () {
-            Navigator.of(context)
-                .pushReplacementNamed(AboutScreen.routeName);
+            Navigator.of(context).pushReplacementNamed(AboutScreen.routeName);
           },
         ),
         Divider(),
-        ListTile(
-          leading: Icon(Icons.shop),
-          title: Text("License"),
-          onTap: () {
-            Navigator.of(context)
-                .pushReplacementNamed(VerticalsOverviewScreen.routeName);
-          },
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.shop),
+        //   title: Text("License"),
+        //   onTap: () {
+        //     Navigator.of(context)
+        //         .pushReplacementNamed(VerticalsOverviewScreen.routeName);
+        //   },
+        // ),
       ]),
     );
   }

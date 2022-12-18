@@ -60,7 +60,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
@@ -85,7 +86,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
               infoWindow: InfoWindow(
                 title: verticals[i].title,
                 snippet: vertex.data['node_id'],
-              ),draggable: true,
+              ),
+              draggable: true,
               icon: getIcon(vertex),
               onTap: () {
                 showModalBottomSheet(
@@ -137,7 +139,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
                           icon: ImageIcon(
                             AssetImage(
                                 "assets/icon/" + verticals[i].title + ".png"),
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 245, 240, 240),
                           ),
                         ),
                       ],
@@ -149,12 +151,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 onTap: () => onSelection("all"),
                 child: Container(
                   padding: EdgeInsets.all(getProportionateScreenHeight(15)),
-                  child: 
-                    Text(
-                      "Show All",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: Text(
+                    "Show All",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
                   decoration: BoxDecoration(
                     color: Color(0xff645478),
                     borderRadius: BorderRadius.all(
@@ -170,6 +171,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
   }
 
   void onSelection(String _selection) {
+    print(_selection);
     setState(() {
       _markers.clear();
       selected = _selection;
@@ -194,8 +196,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
     sremIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_em.png');
     srocIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/icon/sr_oc.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sr_oc.png');
     weIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/we.png');
     wdIcon = await BitmapDescriptor.fromAssetImage(
@@ -203,10 +204,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
     wfIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/wf.png');
     wnIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),'assets/icon/wn.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/sl.png');
   }
 
   BitmapDescriptor getIcon(Vertex vertex) {
+    print(vertex.type);
     BitmapDescriptor icon = vertex.type == "aq"
         ? aqIcon
         : (vertex.type == "cm"
@@ -231,10 +233,10 @@ class _MapViewScreenState extends State<MapViewScreen> {
                                                 ? sIcon
                                                 : (vertex.type == "em"
                                                     ? emIcon
-                                                  : (vertex.type =="wn" 
-                                                    ? wnIcon
-                                                    : BitmapDescriptor
-                                                        .defaultMarker))))))))))));
+                                                    : (vertex.type == "wn"
+                                                        ? wnIcon
+                                                        : BitmapDescriptor
+                                                            .defaultMarker))))))))))));
     return icon;
   }
 }
