@@ -21,47 +21,53 @@ class Deployment extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
           color: Colors.black, borderRadius: BorderRadius.circular(8)),
-      
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
-        horizontal: getProportionateScreenWidth(16),
-        vertical: getProportionateScreenHeight(16)
-      ),
+          horizontal: getProportionateScreenWidth(16),
+          vertical: getProportionateScreenHeight(16)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DetailsTitle(imagePath: 'assets/icon/s.png', title: 'Deployment'),
-
           SizedBox(
             height: getProportionateScreenHeight(20),
           ),
           SummaryDetailsCard(
-              name: "Weather Station", value: details["we"]["nodes"].toString()),
+              name: "Weather Station",
+              value: details["we"]["nodes"].toString()),
           SummaryDetailsCard(
               name: "Air Quality", value: details["aq"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "Water Distribution", value: details["wd"]["nodes"].toString()),
-          SummaryDetailsCard(name: "Water Flow", value: details["wf"]["nodes"].toString()),
+              name: "Water Distribution",
+              value: details["wd"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "Weather Station", value: details["we"]["nodes"].toString()),
+              name: "Water Flow", value: details["wf"]["nodes"].toString()),
+          SummaryDetailsCard(
+              name: "Weather Station",
+              value: details["we"]["nodes"].toString()),
           SummaryDetailsCard(
               name: "Solar Energy", value: details["sl"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "Energy Monitoring", value: details["em"]["nodes"].toString()),
+              name: "Energy Monitoring",
+              value: details["em"]["nodes"].toString()),
+          SummaryDetailsCard(
+              name: "  - Wisun Deployment",
+              value: details["wn"]["nodes"].toString()),
           SummaryDetailsCard(
               name: "Smart Room (total)", value: summ.toString()),
           SummaryDetailsCard(
-              name: "  - Air Conditioning", value: details["sr_ac"]["nodes"].toString()),
+              name: "  - Air Conditioning",
+              value: details["sr_ac"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "  - Occupancy", value: details["sr_oc"]["nodes"].toString()),
+              name: "  - Occupancy",
+              value: details["sr_oc"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "  - Air Quality", value: details["sr_aq"]["nodes"].toString()),
+              name: "  - Air Quality",
+              value: details["sr_aq"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "  - Energy Monitoring", value: details["sr_em"]["nodes"].toString()),
-          SummaryDetailsCard(
-            name: "  - Wisun Deployment", value: details["wn"]["nodes"].toString()
-          )
+              name: "  - Energy Monitoring",
+              value: details["sr_em"]["nodes"].toString()),
         ],
       ),
     );
