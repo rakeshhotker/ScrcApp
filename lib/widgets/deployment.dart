@@ -52,7 +52,7 @@ class Deployment extends StatelessWidget {
               name: "Energy Monitoring",
               value: details["em"]["nodes"].toString()),
           SummaryDetailsCard(
-              name: "  - Wisun Deployment",
+              name: "Wisun Deployment",
               value: details["wn"]["nodes"].toString()),
           SummaryDetailsCard(
               name: "Smart Room (total)", value: summ.toString()),

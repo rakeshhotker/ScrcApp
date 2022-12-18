@@ -22,12 +22,12 @@ class _GraphScreenState extends State<GraphScreen> {
   var type;
   var verticalsData;
   var graph;
-  DateTime rangeStartDate =
-      DateTime.now().subtract(Duration(hours: 3));
+  DateTime rangeStartDate = DateTime.now().subtract(Duration(hours: 3));
   DateTime rangeEndDate = DateTime.now();
 
   Future<void> getGraphReadings() async {
-    String url = "https://smartcitylivinglab.iiit.ac.in/graph/?start=";
+    String url =
+        "https://dashboard.smartcitylivinglab.iiit.ac.in/graph/?start=";
     url += rangeStartDate.toIso8601String();
     url += "&end=";
     url += rangeEndDate.toIso8601String();
@@ -120,7 +120,8 @@ class _GraphScreenState extends State<GraphScreen> {
         for (int i = 0; i < value.length; i++) {
           tmp.add(GraphData(
             value: value[i],
-            year: DateFormat('dd MMM yyyy \n kk:mm').format(DateTime.parse(dates[i])) ,
+            year: DateFormat('dd MMM yyyy \n kk:mm')
+                .format(DateTime.parse(dates[i])),
           ));
         }
         lines.add(tmp);
@@ -130,9 +131,7 @@ class _GraphScreenState extends State<GraphScreen> {
           appBar: AppBar(
             title: Text(nodeId),
             backgroundColor: Colors.white,
-            titleTextStyle: TextStyle(
-              color: Color(0XFF8B8B8B), fontSize: 18
-            ),
+            titleTextStyle: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
             elevation: 5,
             iconTheme: IconThemeData(color: Colors.black),
           ),
@@ -151,11 +150,9 @@ class _GraphScreenState extends State<GraphScreen> {
                           content: SingleChildScrollView(
                             child: SfDateRangePicker(
                               view: DateRangePickerView.month,
-                              selectionMode:
-                                  DateRangePickerSelectionMode.range,
+                              selectionMode: DateRangePickerSelectionMode.range,
                               onSelectionChanged:
-                                  (DateRangePickerSelectionChangedArgs
-                                      args) {
+                                  (DateRangePickerSelectionChangedArgs args) {
                                 if (args.value is PickerDateRange) {
                                   rangeStartDate = args.value.startDate;
                                   rangeEndDate = args.value.endDate;
@@ -191,22 +188,18 @@ class _GraphScreenState extends State<GraphScreen> {
                     child: SfCartesianChart(
                         zoomPanBehavior: _zoomPanBehavior,
                         primaryXAxis: CategoryAxis(
-                          labelIntersectAction: AxisLabelIntersectAction.multipleRows,
-                          labelStyle: TextStyle(
-                            fontWeight: FontWeight.w600
-                          )
-                        ),
+                            labelIntersectAction:
+                                AxisLabelIntersectAction.multipleRows,
+                            labelStyle: TextStyle(fontWeight: FontWeight.w600)),
                         enableAxisAnimation: true,
                         legend: Legend(isVisible: true),
                         series: <CartesianSeries>[
                           for (int i = 0; i < lines.length; i++)
                             LineSeries<GraphData, String>(
-                                name: names[i],
-                                dataSource: lines[i],
-                                xValueMapper: (GraphData data, _) =>
-                                    data.year,
-                                yValueMapper: (GraphData data, _) =>
-                                    data.value,
+                              name: names[i],
+                              dataSource: lines[i],
+                              xValueMapper: (GraphData data, _) => data.year,
+                              yValueMapper: (GraphData data, _) => data.value,
                             )
                         ]),
                   ),
@@ -217,5 +210,3 @@ class _GraphScreenState extends State<GraphScreen> {
     }
   }
 }
-
-

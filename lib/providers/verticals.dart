@@ -62,7 +62,7 @@ class Verticals with ChangeNotifier {
       final response = await http.get(uri);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       graph = extractedData;
-      print(graph.toString());
+      // print(graph.toString());
       notifyListeners();
     } catch (error) {
       print(error);
